@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@micropasts/grid-ref — OSGB36 Grid Reference Demo</title>
+  <script>
+    (function () {
+      const saved = localStorage.getItem('gr-demo-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <style>
+    grid-ref.amber-card {
+      --gr-accent: #d97706;
+      --gr-border: #b45309;
+      --gr-radius: 0.375rem;
+    }
+    grid-ref.amber-card::part(title) {
+      color: #f59e0b;
+    }
+  </style>
+</head>
+<body class="bg-stone-50 text-stone-900 dark:bg-zinc-950 dark:text-zinc-100 min-h-screen transition-colors">
+  <div class="max-w-5xl mx-auto px-6 py-10 space-y-10">
+
+    <header class="flex flex-wrap items-start justify-between gap-4 border-b border-stone-200 dark:border-zinc-800 pb-6">
+      <div>
+        <div class="text-xs font-mono uppercase tracking-wider text-sky-700 dark:text-sky-400 mb-1">
+          @micropasts/grid-ref · OSGB36 &amp; WGS84
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight">National Grid Reference &amp; Precision</h1>
+        <p class="text-sm text-stone-600 dark:text-zinc-400 mt-1.5 max-w-2xl">
+          Inspect Ordnance Survey grid precision, findspot sensitivity rounding, WGS84 coordinates, and bounding boxes.
+        </p>
+      </div>
+      <button id="theme-toggle" type="button"
+        class="rounded-md border border-stone-300 dark:border-zinc-700 px-3 py-1.5 text-xs font-medium hover:bg-stone-100 dark:hover:bg-zinc-900">
+        Toggle Dark Mode
+      </button>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-7 space-y-6">
+
+        <section class="rounded-xl border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-4">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-zinc-400">
+            1. Findspot Precision &amp; Obfuscation in Context (&lt;grid-ref-tw&gt;)
+          </h2>
+          <p class="leading-7 text-[15px]">
+            Publicly released findspot at
+            <grid-ref-tw ref="TL10" prevent-navigation>TL 10 (10km)</grid-ref-tw>,
+            refined parish recording around
+            <grid-ref-tw ref="TL 135 072" prevent-navigation>TL 135 072 (100m)</grid-ref-tw>,
+            and exact excavation trench at
+            <grid-ref-tw ref="TL 1354 0728" prevent-navigation>TL 1354 0728 (10m)</grid-ref-tw>.
+          </p>
+        </section>
+
+        <section class="rounded-xl border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-4">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-zinc-400">
+            2. Inline Badges &amp; Custom Shadow DOM Styling (&lt;grid-ref&gt;)
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            <grid-ref-tw ref="SP910090" mode="inline"></grid-ref-tw>
+            <grid-ref-tw ref="TQ300800" mode="inline"></grid-ref-tw>
+          </div>
+          <p class="leading-7 text-[15px] pt-2">
+            Custom Shadow DOM theme:
+            <grid-ref class="amber-card" ref="TL 135 072" prevent-navigation>TL 135 072</grid-ref>.
+          </p>
+        </section>
+
+      </div>
+
+      <aside class="lg:col-span-5 space-y-3">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-zinc-400">
+          Synchronized Inspector Panel
+        </h2>
+        <grid-ref-tw mode="panel" listen="heritage:select" ref="TL 135 072"></grid-ref-tw>
+      </aside>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import './grid-ref.esm.js';
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('gr-demo-theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
